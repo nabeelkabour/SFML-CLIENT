@@ -1,17 +1,21 @@
 #include "UI.h"
 #include <string>
 
+Menu::Menu(olc::PixelGameEngine* _pge, PlayerManager* _playerManager, Client* _client, MenuManager* _menuManager) :
+	pge(_pge), playerManager(_playerManager), client(_client), menuManager(_menuManager) {}
+
 void Menu::update()
 {
 	guiManager.Update(pge);
 }
 
-MainMenu::MainMenu(olc::PixelGameEngine* _pge, PlayerManager* _playerManager, Client* _client, MenuManager* _menuManager)
+MainMenu::MainMenu(olc::PixelGameEngine* _pge, PlayerManager* _playerManager, Client* _client, MenuManager* _menuManager) :
+	Menu(_pge, _playerManager, _client, _menuManager)
 {
-	pge = _pge;
-	playerManager = _playerManager;
-	client = _client;
-	menuManager = _menuManager;
+	//pge = _pge;
+	//playerManager = _playerManager;
+	//client = _client;
+	//menuManager = _menuManager;
 
 	titleLabel = new olc::QuickGUI::Label(guiManager, "Main Menu",
 		{ float(500) / 2.f, 25.f }, { 50.f, 16.f });
@@ -35,12 +39,13 @@ void MainMenu::onNotify(Client* client, Event event)
 
 }
 
-GameMenu::GameMenu(olc::PixelGameEngine* _pge, PlayerManager* _playerManager, Client* _client, MenuManager* _menuManager)
+GameMenu::GameMenu(olc::PixelGameEngine* _pge, PlayerManager* _playerManager, Client* _client, MenuManager* _menuManager) :
+	Menu(_pge, _playerManager, _client, _menuManager)
 {
-	pge = _pge;
-	playerManager = _playerManager;
-	client = _client;
-	menuManager = _menuManager;
+	//pge = _pge;
+	//playerManager = _playerManager;
+	//client = _client;
+	//menuManager = _menuManager;
 
 	enterIpLabel = new olc::QuickGUI::Label(guiManager, "Enter IP address and port:",
 		{ 250.f, 25.f }, { 50.f, 32.f });

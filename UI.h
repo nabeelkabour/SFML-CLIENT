@@ -79,8 +79,9 @@ public:
 
 	olc::QuickGUI::Manager guiManager;
 
+	Menu(olc::PixelGameEngine* _pge, PlayerManager* _playerManager, Client* _client, MenuManager* _menuManager);
 	virtual void onNotify(Client* client, Event event) = 0;
-	virtual void update() = 0;
+	virtual void update();
 	//virtual void update(olc::PixelGameEngine* pge, MenuManager* menuManager, Client* client);
 };
 
@@ -94,7 +95,6 @@ public:
 
 	virtual void onNotify(Client* client, Event event) override;
 	virtual void update() override;
-	//virtual void update(olc::PixelGameEngine* pge, MenuManager* menuManager, Client* client) override;
 };
 
 class GameMenu : public Menu
@@ -115,7 +115,6 @@ public:
 
 	virtual void onNotify(Client* client, Event event) override;
 	virtual void update() override;
-	//virtual void update(olc::PixelGameEngine* pge, MenuManager* menuManager, Client* client) override;
 };
 
 

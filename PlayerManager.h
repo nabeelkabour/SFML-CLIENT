@@ -15,8 +15,8 @@ class Player;
 class PlayerManager : public Observer
 {
 public:
-	olc::PixelGameEngine* pge;
-	Client* client;
+	olc::PixelGameEngine* pge = nullptr;
+	Client* client = nullptr;
 
 	Player* mainPlayer;
 	std::list<OtherPlayer*> otherPlayers;
