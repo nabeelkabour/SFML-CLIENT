@@ -7,7 +7,7 @@
 struct PlayerData
 {
 	std::string name = "NONE";
-	int32_t playerId = -1;
+	int8_t playerId = -1;
 	int32_t hp = 100;
 };
 
@@ -33,12 +33,12 @@ public:
 		playerData.playerId = _playerId;
 	}
 
-	OtherPlayer(int32_t _playerId, float _x, float _y) : Actor(_x, _y)
+	OtherPlayer(int8_t _playerId, float _x, float _y) : Actor(_x, _y)
 	{
 		playerData.playerId = _playerId;
 	}
 
-	OtherPlayer(int32_t _playerId, olc::vf2d pos) : Actor(pos)
+	OtherPlayer(int8_t _playerId, olc::vf2d pos) : Actor(pos)
 	{
 		playerData.playerId = _playerId;
 	}

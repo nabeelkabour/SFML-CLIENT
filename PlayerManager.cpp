@@ -2,37 +2,64 @@
 #include "Player.h"
 #include "Networking.h"
 
-void PlayerManager::onNotify(Client* client, Event event)
+void PlayerManager::onNotify(sf::Packet packet)
 {
-	switch (event)
-	{
-	case Event::CLIENT_CONNECTED:
-	{
-		mainPlayer = new Player(client->socketId);
+	uint8_t identifier;
+	packet >> identifier;
 
-		cout << "Main player Connected: " << (int)client->socketId << "\n";
+	switch (identifier)
+	{
+	case Cmd::clientConnected:
+	{
+		int8_t connectingSocket;
+		packet >> connectingSocket;
+
+		mainPlayer = new Player(connectingSocket);
+
+		cout << "Main player Connected: " << (int)connectingSocket << "\n";
 	}
 	break;
 
-	case Event::CLIENT_BROADCAST:
+	case Cmd::broadcastNewClient:
 	{
-		otherPlayers.push_back(new OtherPlayer(client->socketId));
-		cout << "Other player connected: " << (int)client->socketId << "\n";
+		int8_t broadcastSocket;
+		packet >> broadcastSocket;
+
+		otherPlayers.push_back(new OtherPlayer(broadcastSocket));
+		cout << "Other player connected: " << (int)broadcastSocket << "\n";
 	}
 	break;
 
-	case Event::CLIENT_SYNC:
+	case Cmd::syncPrevClients:
 	{
-		otherPlayers.push_back(new OtherPlayer(client->socketId));
-		cout << "Synced client ID: " << (int)client->socketId << "\n";
+		int8_t syncSocket;
+		packet >> syncSocket;
+
+		otherPlayers.push_back(new OtherPlayer(syncSocket));
+		cout << "Synced client ID: " << (int)syncSocket << "\n";
 	}
 	break;
 
-	case Event::CLIENT_NAME:
+	case Cmd::sendName:
 	{
+		std::string nameStr;
+		int8_t nameId;
+		packet >> nameId;
+		packet >> nameStr;
+
+		if (client->socketId == nameId)
+		{
+			mainPlayer->name = nameStr;
+			break;
+		}
+
 		for (auto& player : otherPlayers)
 		{
-			//if(player->playerId == )
+			if (nameId == player->playerData.playerId)
+			{
+				player->playerData.name = nameStr;
+				break;
+			}
 		}
 	}
 	break;

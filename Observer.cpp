@@ -1,10 +1,10 @@
 #include "Observer.h"
 
-void Subject::notify(Client* client, Event event)
+void Subject::notify(sf::Packet packet)
 {
 	for (auto _observer : _observers)
 	{
-		_observer->onNotify(client, event);
+		_observer->onNotify(packet);
 	}
 }
 

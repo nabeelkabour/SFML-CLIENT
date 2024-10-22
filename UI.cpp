@@ -12,11 +12,6 @@ void Menu::update()
 MainMenu::MainMenu(olc::PixelGameEngine* _pge, PlayerManager* _playerManager, Client* _client, MenuManager* _menuManager) :
 	Menu(_pge, _playerManager, _client, _menuManager)
 {
-	//pge = _pge;
-	//playerManager = _playerManager;
-	//client = _client;
-	//menuManager = _menuManager;
-
 	titleLabel = new olc::QuickGUI::Label(guiManager, "Main Menu",
 		{ float(500) / 2.f, 25.f }, { 50.f, 16.f });
 
@@ -34,7 +29,7 @@ void MainMenu::update()
 	}
 }
 
-void MainMenu::onNotify(Client* client, Event event)
+void MainMenu::onNotify(sf::Packet packet)
 {
 
 }
@@ -42,11 +37,6 @@ void MainMenu::onNotify(Client* client, Event event)
 GameMenu::GameMenu(olc::PixelGameEngine* _pge, PlayerManager* _playerManager, Client* _client, MenuManager* _menuManager) :
 	Menu(_pge, _playerManager, _client, _menuManager)
 {
-	//pge = _pge;
-	//playerManager = _playerManager;
-	//client = _client;
-	//menuManager = _menuManager;
-
 	enterIpLabel = new olc::QuickGUI::Label(guiManager, "Enter IP address and port:",
 		{ 250.f, 25.f }, { 50.f, 32.f });
 
@@ -87,42 +77,34 @@ void GameMenu::update()
 	}
 }
 
-void GameMenu::onNotify(Client* client, Event event)
+void GameMenu::onNotify(sf::Packet packet)
 {
-	switch (event)
+	uint8_t identifier;
+	packet >> identifier;
+
+	switch (identifier)
 	{
-	case Event::CLIENT_CONNECTED:
+	case Cmd::clientConnected:
 	{
 		playerList.push_back(nameText->sText);
 	}
 	break;
 
-	//case Event::CLIENT_SYNC:
-	case Event::CLIENT_BROADCAST:
+	case Cmd::syncPrevClients:
+	case Cmd::broadcastNewClient:
 	{
-		//playerList.push_back("player" + std::to_string(client->socketId));
-		playerList.push_back("text");
-	}
-	break;
+		std::string connectingName;
+		packet >> connectingName;
 
-	case Event::CLIENT_SYNC:
-	{
-		//playerList.push_back("player" + std::to_string(client->socketId));
-		//playerList.push_back("player" + std::to_string(client->socketId));
-		playerList.push_back("text");
+		playerList.push_back(connectingName);
 	}
 	break;
 	}
 }
 
-void MenuManager::onNotify(Client* client, Event event)
+void MenuManager::onNotify(sf::Packet packet)
 {
-	currentMenu->onNotify(client, event);
-}
-
-MenuManager::MenuManager()
-{
-	changeMenu(new MainMenu(pge, playerManager, client, this));
+	currentMenu->onNotify(packet);
 }
 
 void MenuManager::changeMenu(Menu* newMenu)

@@ -26,6 +26,8 @@ bool Game::OnUserCreate()
 	menuManager.client = &client;
 	menuManager.playerManager = &playerManager;
 
+	menuManager.changeMenu(new MainMenu(this, &playerManager, &client, &menuManager));
+
 	playerManager.pge = this;
 	playerManager.client = &client;
 

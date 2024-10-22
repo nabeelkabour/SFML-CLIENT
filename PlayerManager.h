@@ -21,8 +21,7 @@ public:
 	Player* mainPlayer;
 	std::list<OtherPlayer*> otherPlayers;
 
-	//virtual void onNotify(Event event, int32_t data)
-	virtual void onNotify(Client* client, Event event);
+	virtual void onNotify(sf::Packet packet);
 };
 
 #endif
